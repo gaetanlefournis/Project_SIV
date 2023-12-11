@@ -1,7 +1,7 @@
 <!-- AUTHORS -->
 <div align="center">
 
-![By][by-shield]
+## ![By][by-shield]
 
 </div>
 
