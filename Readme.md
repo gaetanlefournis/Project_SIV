@@ -1,7 +1,7 @@
 <!-- AUTHORS -->
 <div align="center">
 
-## ![By][by-shield]
+# ![By][by-shield]
 
 </div>
 
@@ -12,7 +12,7 @@ This project consists in creating a virtual sudoku. The aim is to detect the han
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Installation
+## Installation
 
 Please make sure that "make" is installed :
 
