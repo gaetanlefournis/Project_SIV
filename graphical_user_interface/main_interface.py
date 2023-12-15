@@ -1,0 +1,56 @@
+import cv2
+import time
+import constants
+import interface_grid as ig
+
+
+def main():
+    # Use the built-in webcam to capture video
+    # wait for 1 second before the webcam starts
+    time.sleep(1)
+    cap = cv2.VideoCapture(0)
+
+    # Set the webcam resolution (we have to put it bigger to display the sudoku)
+    cap.set(3, constants.WIDTH_CAMERA)
+    cap.set(4, constants.HEIGHT_CAMERA)
+
+    while True:
+        # Read the image from the webcam
+        _, img = cap.read()
+
+        # Resize the image in function of the webcam resolution
+        img = cv2.resize(img, (constants.WIDTH_CAMERA, constants.HEIGHT_CAMERA))
+
+        # We convert the image to RGB 
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+        # We create the grid
+        if constants.MAIN_GRID_SIZE == 4:
+            grid = ig.Grid(constants.LIST_DIGITS_INITIAL_4)
+        elif constants.MAIN_GRID_SIZE == 9:
+            grid = ig.Grid(constants.LIST_DIGITS_INITIAL_9)
+
+        # We draw the grid and the digits inside
+        grid.draw_grid(img)
+        grid.display_digits_grid(img)
+
+        # We convert the image back to BGR
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+
+        # We display the resulting frame
+        cv2.imshow("Image", img)
+
+        # if 'q' is pressed, quit
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+        # We check if the sudoku is completed
+        grid.display_completion(img)
+
+    # release the camera and close the window
+    cap.release()
+    cv2.destroyAllWindows()
+    
+
+if __name__ == '__main__':
+    main()

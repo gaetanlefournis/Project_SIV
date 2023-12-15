@@ -3,3 +3,4 @@
 venv/
 hand_detection/images
 hand_detection/__pycache__
+graphical_user_interface/__pycache__
