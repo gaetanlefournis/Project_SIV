@@ -12,6 +12,7 @@ This project consists in creating a virtual sudoku. The aim is to detect the han
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- HOW TO INSTALL -->
 ## Installation
 
 Please make sure that "make" is installed :
@@ -42,5 +43,5 @@ If we add some dependencies in the requirements.txt, be sure to do "make install
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [by-shield]: https://img.shields.io/badge/by-Elsa_%26_getget-blue

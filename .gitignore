@@ -1,1 +1,5 @@
+# Here are the files that we don't want to push. They are personal files.
+
 venv/
+hand_detection/images
+hand_detection/__pycache__

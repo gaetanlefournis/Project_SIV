@@ -1,0 +1,5 @@
+# Dependencies useful for the project
+
+opencv-python
+numpy
+mediapipe
