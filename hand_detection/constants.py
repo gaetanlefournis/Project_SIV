@@ -1,3 +1,7 @@
+#############################################
+#  GENERAL PARAMETERS OF THE HAND DETECTION #
+#############################################
+
 NB_FINGERS_BARYCENTER = 5
 NB_FINGERS_CLICK = 4
 HAND_NUMBER = 0

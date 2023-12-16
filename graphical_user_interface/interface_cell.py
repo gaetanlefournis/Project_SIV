@@ -1,6 +1,7 @@
 import cv2
-import constants
 import numpy as np
+
+from graphical_user_interface import constants
 
 class Cell():
     '''This class represents a cell of the sudoku. It is composed of a value and coordinates.

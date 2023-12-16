@@ -1,5 +1,6 @@
 import numpy as np
-import constants
+
+from hand_detection import constants
 
 
 class Hand():

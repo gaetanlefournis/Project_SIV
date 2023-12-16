@@ -1,7 +1,8 @@
 import numpy as np
 import cv2
-import constants
-import interface_cell as ic
+
+from graphical_user_interface import constants
+from graphical_user_interface import interface_cell as ic
 
 class Grid():
     '''This class represents the grid of the sudoku. It is composed of cells.

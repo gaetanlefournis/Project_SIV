@@ -1,10 +1,35 @@
-import cv2
 import time
-import constants
-import interface_grid as ig
+
+import cv2
+import numpy as np
+
+from graphical_user_interface import constants
+from graphical_user_interface import interface_grid as ig
 
 
-def main():
+
+def main_interface(img:np.ndarray, grid:ig.Grid) -> np.ndarray:
+    '''This function is the main function of the graphical user interface.
+    
+    Args:
+        img (np.ndarray): image
+        grid (ig.Grid): grid of the sudoku
+        
+    Returns:
+        img (np.ndarray): image
+    '''
+
+    # We draw the grid and the digits inside
+    grid.draw_grid(img)
+    grid.display_digits_grid(img)
+
+    # We check if the sudoku is completed
+    grid.display_completion(img)
+
+    return img
+    
+
+if __name__ == '__main__':
     # Use the built-in webcam to capture video
     # wait for 1 second before the webcam starts
     time.sleep(1)
@@ -50,7 +75,3 @@ def main():
     # release the camera and close the window
     cap.release()
     cv2.destroyAllWindows()
-    
-
-if __name__ == '__main__':
-    main()

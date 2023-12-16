@@ -1,6 +1,7 @@
 import mediapipe as mp
 import numpy as np
-import hand_properties as hp
+
+from hand_detection import hand_properties as hp
 
 class HandDetector():
     '''This class is used to detect hands in an image/video and perform actions.

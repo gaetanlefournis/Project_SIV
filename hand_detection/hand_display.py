@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
-import constants
+
+from hand_detection import constants
 
 class Display():
     '''This class is used to perform all the display actions.
