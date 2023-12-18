@@ -89,6 +89,24 @@ class Grid():
             for j in range(constants.MAIN_GRID_SIZE):
                 self.cells[i][j].display_cell(screen)
 
+    def find_clicked_cell(self, coordinates_click : tuple[int]) -> ic.Cell:
+        '''Find the cell that has been clicked'''
+        for i in range(constants.MAIN_GRID_SIZE):
+            for j in range(constants.MAIN_GRID_SIZE):
+                if self.cells[i][j].is_clicked(coordinates_click):
+                    self.cells[i][j].is_active = True
+                    return self.cells[i][j]
+                else:
+                    self.cells[i][j].is_active = False
+        return None
+
+    def ask_digit(self, cell:ic.Cell) -> None:
+        '''Ask the user to put a digit in the grid via the terminal'''
+        if cell is not None:
+            cell.value = int(input("Enter a digit for the cell ({}, {}) : ".format(cell.position_in_grid[0], cell.position_in_grid[1])))
+            print("You have entered the digit {} for the cell ({}, {})".format(cell.value, cell.position_in_grid[0], cell.position_in_grid[1]))
+            cell.is_active = False
+
 
     def is_completed(self) -> bool:
         '''Check if the grid is completed'''
@@ -101,4 +119,4 @@ class Grid():
     def display_completion(self, screen : np.ndarray) -> None:
         '''Display the message "Sudoku Completed" if the grid is completed'''
         if self.is_completed():
-            cv2.putText(screen, "Sudoku Completed ! \n Congrats ! ", (constants.WIDTH_CAMERA//2 - 50, constants.HEIGHT_CAMERA//2), cv2.FONT_HERSHEY_SIMPLEX, constants.COMPLETION_FONTSCALE, constants.COMPLETION_COLOR, constants.COMPLETION_THICKNESS, cv2.LINE_AA)
+            cv2.putText(screen, "Sudoku Completed !", (constants.WIDTH_CAMERA//10, constants.HEIGHT_CAMERA//2), cv2.FONT_HERSHEY_DUPLEX, constants.COMPLETION_FONTSCALE, constants.COMPLETION_COLOR, constants.COMPLETION_THICKNESS, cv2.LINE_AA)

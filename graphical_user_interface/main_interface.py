@@ -8,12 +8,13 @@ from graphical_user_interface import interface_grid as ig
 
 
 
-def main_interface(img:np.ndarray, grid:ig.Grid) -> np.ndarray:
+def main_interface(img:np.ndarray, grid:ig, coordinates_click: tuple[int]) -> np.ndarray:
     '''This function is the main function of the graphical user interface.
     
     Args:
         img (np.ndarray): image
         grid (ig.Grid): grid of the sudoku
+        coordinates_click (tuple[int]): coordinates of the click
         
     Returns:
         img (np.ndarray): image
@@ -22,6 +23,13 @@ def main_interface(img:np.ndarray, grid:ig.Grid) -> np.ndarray:
     # We draw the grid and the digits inside
     grid.draw_grid(img)
     grid.display_digits_grid(img)
+
+    # We check where the click is (if there was one)
+    if coordinates_click is not None:
+        cell = grid.find_clicked_cell(coordinates_click)
+
+        # We ask the user to put a digit in the grid via the terminal
+        grid.ask_digit(cell)    
 
     # We check if the sudoku is completed
     grid.display_completion(img)

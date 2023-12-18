@@ -22,22 +22,22 @@ class HandDetector():
         self.mpHands = mp.solutions.hands
         self.hands = self.mpHands.Hands()
         self.results = None
+        self.list_actions = np.asarray([False, False, False, False, False])
 
     def process_image(self) -> np.ndarray:
         '''This function processes an image in order to detect hands in it.'''
         self.results = self.hands.process(self.img)
 
-    def click(self, hand: hp.Hand) -> bool: 
-        '''This function returns True if at least three of the fingers are bent.
-        That position means that we are clicking at the position of the barycenter of the hand.
-        
-        Args:
-            hand (Hand): hand
-            
-        Returns:
-            True if at least three of the fingers are bent, False otherwise
-        '''
+    def fingers_bent(self, hand:hp.Hand) -> bool:
+        '''This function returns True if at least three of the fingers are bent.'''
+        self.list_actions = np.roll(self.list_actions, -1)
         if hand.fingers.sum() >= 2:
-            return False
+            self.list_actions[4] = False
         else:
+            self.list_actions[4] = True
+
+    def click(self) -> bool: 
+        if not self.list_actions[0] and not self.list_actions[1] and not self.list_actions[2] and not self.list_actions[3] and self.list_actions[4]:
             return True
+        else:
+            return False

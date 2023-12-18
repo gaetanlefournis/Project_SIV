@@ -18,6 +18,9 @@ def main_hand_detection(img : np.ndarray, detector : htm.HandDetector, display :
     # We process the image in order to detect hands in it
     detector.process_image()
 
+    # We initialize the coordinates of the click
+    coordinates_click = None
+
     # If there are hands detected, we get the one designed by HAND_NUMBER
     if detector.results.multi_hand_landmarks:
         hand_lm = detector.results.multi_hand_landmarks[constants.HAND_NUMBER]
@@ -41,12 +44,14 @@ def main_hand_detection(img : np.ndarray, detector : htm.HandDetector, display :
         display.draw_barycenter(detector.img, hand.barycenter)
 
         # We check if we are clicking
-        if detector.click(hand):
+        detector.fingers_bent(hand)
+        if detector.click():
             print("clicking")
+            coordinates_click = hand.barycenter
         else:
             print("not clicking")
 
-    return img
+    return img, coordinates_click
 
     
 
@@ -101,6 +106,7 @@ if __name__ == '__main__':
             # We check if we are clicking
             if detector.click(hand):
                 print("clicking")
+                print(hand.barycenter)
             else:
                 print("not clicking")
 
