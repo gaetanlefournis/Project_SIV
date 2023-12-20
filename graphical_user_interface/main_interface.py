@@ -29,7 +29,7 @@ def main_interface(img:np.ndarray, grid:ig, coordinates_click: tuple[int]) -> np
         cell = grid.find_clicked_cell(coordinates_click)
 
         # We ask the user to put a digit in the grid via the terminal
-        grid.ask_digit(cell)    
+        # grid.ask_digit(cell)    
 
     # We check if the sudoku is completed
     grid.display_completion(img)
