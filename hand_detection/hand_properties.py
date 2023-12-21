@@ -34,15 +34,17 @@ class Hand():
     
     def calculate_barycenter(self) -> tuple:
         '''This function calculates the barycenter of the hand, based on 5 special landmarks: 
-            - thumb CMC
+            - wrist
             - index finger MCP
             - middle finger MCP
             - ring finger MCP
             - pinky MCP.
+
+        We put a weight of 3 on the wrist, and a weight of 1 on the other landmarks.
         '''
         if self.lmList:
-            x1 = self.lmList[constants.LANDMARKS["THUMB_CMC"]][1]
-            y1 = self.lmList[constants.LANDMARKS["THUMB_CMC"]][2]
+            x1 = self.lmList[constants.LANDMARKS["WRIST"]][1]
+            y1 = self.lmList[constants.LANDMARKS["WRIST"]][2]
             x2 = self.lmList[constants.LANDMARKS["INDEX_FINGER_MCP"]][1]
             y2 = self.lmList[constants.LANDMARKS["INDEX_FINGER_MCP"]][2]
             x3 = self.lmList[constants.LANDMARKS["MIDDLE_FINGER_MCP"]][1]
@@ -51,7 +53,7 @@ class Hand():
             y4 = self.lmList[constants.LANDMARKS["RING_FINGER_MCP"]][2]
             x5 = self.lmList[constants.LANDMARKS["PINKY_MCP"]][1]
             y5 = self.lmList[constants.LANDMARKS["PINKY_MCP"]][2]
-        self.barycenter = (int((x1 + x2 + x3 + x4 + x5) / constants.NB_FINGERS_BARYCENTER), int((y1 + y2 + y3 + y4 + y5) / constants.NB_FINGERS_BARYCENTER))
+        self.barycenter = (int((constants.WEIGHTS_WRIST*x1 + x2 + x3 + x4 + x5) / constants.NB_WEIGHS_BARYCENTER), int((constants.WEIGHTS_WRIST*y1 + y2 + y3 + y4 + y5) / constants.NB_WEIGHS_BARYCENTER))
         return self.barycenter
     
     def fingers_up(self) -> np.ndarray[bool]:
