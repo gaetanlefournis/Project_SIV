@@ -7,13 +7,19 @@ class Cell():
     '''This class represents a cell of the sudoku. It is composed of a value and coordinates.
     
     Attributes :
-        coordinates : tuple[int]
+        position_in_grid : tuple[int]
         value : int
         initial : bool
         is_drawn : bool
-        
+        is_active : bool
+        size_cell : int
+        coordinates : tuple[int]
+
     Methods :
+        calculate_size_cell : calculate the size of a cell
+        calculate_coordinates : calculate the coordinates of the cell
         display_cell : display a number in a given cell
+        is_clicked : check if a cell is clicked
         erase_cell : erase the number in a given cell
     '''
 
@@ -51,7 +57,7 @@ class Cell():
         else:
             return False
 
-    def erase_cell(self, screen):
+    def erase_cell(self):
         '''Erase the number in a given cell'''
         self.value = None
         self.is_drawn = False

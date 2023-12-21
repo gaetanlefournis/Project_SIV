@@ -19,9 +19,9 @@ def main():
     detector = hd.hand_detector.HandDetector()
     display = hd.hand_display.Display()
     if gui.MAIN_GRID_SIZE == 4:
-        grid = gui.interface_grid.Grid(gui.LIST_DIGITS_INITIAL_4)
+        grid = gui.interface_grid.Grid(gui.MAIN_GRID_COORDINATES, gui.LIST_DIGITS_INITIAL_4)
     elif gui.MAIN_GRID_SIZE == 9:
-        grid = gui.interface_grid.Grid(gui.LIST_DIGITS_INITIAL_9)
+        grid = gui.interface_grid.Grid(gui.MAIN_GRID_COORDINATES, gui.LIST_DIGITS_INITIAL_9)
 
     # initialize the time to calculate the frame rate
     #################################################

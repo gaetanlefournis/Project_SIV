@@ -28,11 +28,11 @@ def main_interface(img:np.ndarray, grid:ig, coordinates_click: tuple[int]) -> np
     if coordinates_click is not None:
         cell = grid.find_clicked_cell(coordinates_click)
 
+        grid.update_buttons_status()  
         # We ask the user to put a digit in the grid via the terminal
-        # grid.ask_digit(cell)    
+        grid.ask_digit(cell) 
 
-    # We check if the sudoku is completed
-    grid.display_completion(img)
+        grid.click_on_buttons(coordinates_click)
 
     return img
     
@@ -59,9 +59,9 @@ if __name__ == '__main__':
 
         # We create the grid
         if constants.MAIN_GRID_SIZE == 4:
-            grid = ig.Grid(constants.LIST_DIGITS_INITIAL_4)
+            grid = ig.Grid(constants.MAIN_GRID_COORDINATES, constants.LIST_DIGITS_INITIAL_4)
         elif constants.MAIN_GRID_SIZE == 9:
-            grid = ig.Grid(constants.LIST_DIGITS_INITIAL_9)
+            grid = ig.Grid(constants.MAIN_GRID_COORDINATES, constants.LIST_DIGITS_INITIAL_9)
 
         # We draw the grid and the digits inside
         grid.draw_grid(img)
