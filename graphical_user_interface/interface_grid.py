@@ -47,9 +47,10 @@ class Grid():
         self.buttons = np.ndarray(3, dtype=ib.Button)
         self.interface_digit = None
         self.completed = False
-        self.active_cell = [None, None]
+        self.active_cell = None
         self.create_cells()
         self.create_buttons()
+        self.create_interface_digit()
 
     def create_cells(self) -> None:
         '''Create the objects "cell" of the grid'''
@@ -77,6 +78,10 @@ class Grid():
 
         # Create the button "Delete cell"
         self.buttons[2] = ib.Button(constants.BUTTON_DELETE_CELL_COORDINATES, constants.BUTTON_DELETE_CELL_COLOR, constants.BUTTONS_THICKNESS, constants.BUTTON_DELETE_CELL_TEXT, constants.BUTTONS_FONTSCALE, constants.BUTTONS_TEXT_THICKNESS, constants.BUTTON_DELETE_CELL_TEXT_COLOR_ACTIVE, constants.BUTTON_DELETE_CELL_TEXT_COLOR_INACTIVE, constants.BUTTONS_TRANSPARENCY_ACTIVE, constants.BUTTONS_TRANSPARENCY_INACTIVE)
+
+    def create_interface_digit(self):
+        '''Create the interface to write the digit'''
+        self.interface_digit = id.InterfaceDigit(constants.MAIN_GRID_COORDINATES)
     
     def draw_grid(self, screen: np.ndarray) -> None:
         '''Draw the grid on the screen and the empty cells'''
@@ -131,19 +136,18 @@ class Grid():
             for j in range(constants.MAIN_GRID_SIZE):
                 self.cells[i][j].display_cell(screen)
 
-    def find_clicked_cell(self, coordinates_click : tuple[int]) -> ic.Cell:
+    def find_clicked_cell(self, coordinates_click: tuple[int]) -> None:
         '''Find the cell that has been clicked'''
+
         for i in range(constants.MAIN_GRID_SIZE):
             for j in range(constants.MAIN_GRID_SIZE):
                 if self.cells[i][j].is_clicked(coordinates_click):
-                    if not self.active_cell[0] is None:
-                        self.cells[self.active_cell[0], self.active_cell[1]].is_active = False
+                    if not self.active_cell is None:
+                        self.active_cell.is_active = False
                     self.cells[i][j].is_active = True
-                    self.active_cell = [i, j]
-                    return self.cells[i][j]
-                else :
-                    continue
-        return None
+                    self.active_cell = self.cells[i][j]
+                    break
+        
     
     def update_buttons_status(self) -> None:
         '''Return the status of the buttons'''
@@ -181,22 +185,20 @@ class Grid():
             if self.buttons[i].is_active and self.buttons[i].is_clicked(coordinates_click):
                 if i == 0:
                     self.display_completion()
-                    return None
                 elif i == 1:
-                    self.interface_digit = id.InterfaceDigit()
-                    print("ok")
+                    self.interface_digit.is_active = True
                 elif i == 2:
-                    self.cells[self.active_cell[0], self.active_cell[1]].erase_cell()
+                    self.active_cell.erase_cell()
                 self.buttons[i].is_active = False
-                self.cells[self.active_cell[0], self.active_cell[1]].is_active = False
+                self.active_cell.is_active = False
 
-    def ask_digit(self, cell:ic.Cell) -> None:
+    def ask_digit(self) -> None:
         '''Ask the user to put a digit in the grid via the terminal'''
-        if cell is not None and not cell.is_drawn:
-            cell.value = int(input("Enter a digit for the cell ({}, {}) : ".format(cell.position_in_grid[0], cell.position_in_grid[1])))
-            print("You have entered the digit {} for the cell ({}, {})".format(cell.value, cell.position_in_grid[0], cell.position_in_grid[1]))
-            cell.is_active = False
-            self.active_cell = [None, None]
+        if self.active_cell is not None and not self.active_cell.is_drawn:
+            self.active_cell.value = int(input("Enter a digit for the cell ({}, {}) : ".format(self.active_cell.position_in_grid[0], self.active_cell.position_in_grid[1])))
+            print("You have entered the digit {} for the cell ({}, {})".format(self.active_cell.value, self.active_cell.position_in_grid[0], self.active_cell.position_in_grid[1]))
+            self.active_cell.is_active = False
+            self.active_cell = None
             for i in range(1, len(self.buttons)):
                 self.buttons[i].is_active = False
     

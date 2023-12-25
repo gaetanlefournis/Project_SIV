@@ -49,7 +49,7 @@ class Button():
             transparency = self.transparency_inactive
         cv2.rectangle(screen1,(self.coordinates[0], self.coordinates[2]), (self.coordinates[1], self.coordinates[3]), self.color, self.thickness)
         cv2.addWeighted(screen1, transparency, screen, 1 - transparency, 0, screen)
-        cv2.putText(screen, self.text, (self.coordinates[0] + int(1/20*(self.coordinates[1] - self.coordinates[0])), self.coordinates[2] + int(13/20*(self.coordinates[3] - self.coordinates[2]))), cv2.FONT_HERSHEY_SIMPLEX, self.text_font_scale, color_text, self.text_thickness, cv2.LINE_AA)
+        cv2.putText(screen, self.text, (self.coordinates[0] + int(1/20*(self.coordinates[1] - self.coordinates[0])), self.coordinates[2] + int(17/28*(self.coordinates[3] - self.coordinates[2]))), cv2.FONT_HERSHEY_SIMPLEX, self.text_font_scale, color_text, self.text_thickness, cv2.LINE_AA)
 
     def update_button_status(self, activation_button: Callable) -> None:
         '''Update the status of the button'''
