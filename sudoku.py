@@ -43,4 +43,6 @@ grid_9x9 = [
 
 result_4x4 = sudoku(grid_4x4)
 result_9x9 = sudoku(grid_9x9)
+
+print("La grille 9x9 est valide :", result_4x4)
 print("La grille 9x9 est valide :", result_9x9)
