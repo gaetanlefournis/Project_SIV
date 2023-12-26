@@ -27,3 +27,4 @@ def convert_to_BGR(img: np.ndarray) -> np.ndarray:
     """Convert an image to BGR and into a numpy array."""
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
     return img
+    

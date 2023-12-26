@@ -5,26 +5,62 @@ import numpy as np
 
 from graphical_user_interface import constants
 from graphical_user_interface import interface_grid as ig
+from graphical_user_interface import interface_digit as id
 
 
 
-def main_interface(img:np.ndarray, grid:ig.Grid) -> np.ndarray:
+def main_interface(img:np.ndarray, grid:ig, coordinates_click: tuple[int], coordinates_hand: tuple[int]) -> np.ndarray:
     '''This function is the main function of the graphical user interface.
     
     Args:
         img (np.ndarray): image
         grid (ig.Grid): grid of the sudoku
+        coordinates_click (tuple[int]): coordinates of the click
+        coordinates_hand (tuple[int]): coordinates of the hand
         
     Returns:
         img (np.ndarray): image
     '''
+    if grid.interface_digit.is_active:
+        # We draw the main digit interface
+        grid.interface_digit.draw_main(img)
 
-    # We draw the grid and the digits inside
-    grid.draw_grid(img)
-    grid.display_digits_grid(img)
+        if coordinates_click is not None:
+            grid.interface_digit.click_on_grid(coordinates_click)
 
-    # We check if the sudoku is completed
-    grid.display_completion(img)
+            constants.digit = grid.interface_digit.click_on_buttons(coordinates_click)
+
+        else:
+            grid.interface_digit.draw_digit(img, coordinates_hand)  
+
+        grid.interface_digit.update_buttons_status()      
+
+    else:
+        # We draw the grid
+        grid.draw_grid(img)
+
+        if constants.digit is not None:
+            if grid.active_cell is not None:
+                grid.active_cell.value = constants.digit
+                grid.active_cell.is_active = False
+                grid.active_cell = None
+
+        grid.display_digits_grid(img)
+
+        # We check where the click is (if there was one)
+        if coordinates_click is not None:
+            grid.find_clicked_cell(coordinates_click)
+
+            grid.update_buttons_status()  
+            # We ask the user to put a digit in the grid via the terminal
+            # grid.ask_digit() 
+
+            grid.click_on_buttons(coordinates_click)
+
+            grid.update_buttons_status() 
+
+        grid.update_buttons_status()  
+        constants.digit = None
 
     return img
     
@@ -51,9 +87,9 @@ if __name__ == '__main__':
 
         # We create the grid
         if constants.MAIN_GRID_SIZE == 4:
-            grid = ig.Grid(constants.LIST_DIGITS_INITIAL_4)
+            grid = ig.Grid(constants.MAIN_GRID_COORDINATES, constants.LIST_DIGITS_INITIAL_4)
         elif constants.MAIN_GRID_SIZE == 9:
-            grid = ig.Grid(constants.LIST_DIGITS_INITIAL_9)
+            grid = ig.Grid(constants.MAIN_GRID_COORDINATES, constants.LIST_DIGITS_INITIAL_9)
 
         # We draw the grid and the digits inside
         grid.draw_grid(img)
