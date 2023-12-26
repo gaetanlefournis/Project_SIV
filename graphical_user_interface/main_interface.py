@@ -28,7 +28,7 @@ def main_interface(img:np.ndarray, grid:ig, coordinates_click: tuple[int], coord
         if coordinates_click is not None:
             grid.interface_digit.click_on_grid(coordinates_click)
 
-            grid.interface_digit.click_on_buttons(coordinates_click)
+            constants.digit = grid.interface_digit.click_on_buttons(coordinates_click)
 
         else:
             grid.interface_digit.draw_digit(img, coordinates_hand)  
@@ -36,8 +36,15 @@ def main_interface(img:np.ndarray, grid:ig, coordinates_click: tuple[int], coord
         grid.interface_digit.update_buttons_status()      
 
     else:
-        # We draw the grid and the digits inside
+        # We draw the grid
         grid.draw_grid(img)
+
+        if constants.digit is not None:
+            if grid.active_cell is not None:
+                grid.active_cell.value = constants.digit
+                grid.active_cell.is_active = False
+                grid.active_cell = None
+
         grid.display_digits_grid(img)
 
         # We check where the click is (if there was one)
@@ -51,6 +58,9 @@ def main_interface(img:np.ndarray, grid:ig, coordinates_click: tuple[int], coord
             grid.click_on_buttons(coordinates_click)
 
             grid.update_buttons_status() 
+
+        grid.update_buttons_status()  
+        constants.digit = None
 
     return img
     

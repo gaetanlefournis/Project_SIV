@@ -1,5 +1,7 @@
 import numpy as np
 
+digit = None
+
 ###################################
 #  GENERAL PARAMETERS OF THE GUI  #
 ###################################

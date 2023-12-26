@@ -164,19 +164,15 @@ class Grid():
         return True
 
     def activate_draw_digit(self) -> bool:
-        '''Activate the button "Draw digit" if there a cell is active and if it has not been drawn'''
-        for i in range(constants.MAIN_GRID_SIZE):
-            for j in range(constants.MAIN_GRID_SIZE):
-                if self.cells[i][j].is_active and not self.cells[i][j].is_drawn:
-                    return True
+        '''Activate the button "Draw digit" if a cell is active and if it has not been drawn'''
+        if self.active_cell is not None and self.active_cell.is_active and not self.active_cell.is_drawn:
+            return True
         return False
 
     def activate_delete_cell(self) -> bool:
         '''Activate the button "Delete cell" if there a cell is drawn and if it's not an initial cell'''
-        for i in range(constants.MAIN_GRID_SIZE):
-            for j in range(constants.MAIN_GRID_SIZE):
-                if self.cells[i][j].is_drawn and not self.cells[i][j].initial:
-                    return True
+        if self.active_cell is not None and self.active_cell.is_drawn and not self.active_cell.initial:
+            return True
         return False
     
     def click_on_buttons(self, coordinates_click : tuple[int]) -> None:
@@ -185,12 +181,14 @@ class Grid():
             if self.buttons[i].is_active and self.buttons[i].is_clicked(coordinates_click):
                 if i == 0:
                     self.display_completion()
+                    self.active_cell.is_active = False
+                    self.active_cell = None
                 elif i == 1:
-                    self.interface_digit.is_active = True
+                    self.interface_digit.initialize_interface()
                 elif i == 2:
                     self.active_cell.erase_cell()
-                self.buttons[i].is_active = False
-                self.active_cell.is_active = False
+                    self.active_cell.is_active = False
+                    self.active_cell = None
 
     def ask_digit(self) -> None:
         '''Ask the user to put a digit in the grid via the terminal'''

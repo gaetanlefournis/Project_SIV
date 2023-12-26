@@ -3,6 +3,7 @@ import cv2
 
 from graphical_user_interface import constants
 from graphical_user_interface import interface_buttons as ib
+from digit_recognition import main_digit_recognition as mdr
 
 
 class InterfaceDigit():
@@ -60,6 +61,15 @@ class InterfaceDigit():
         '''Create the final image of the digit'''
         self.final_image_digit = np.zeros((self.main_coordinates[3] - self.main_coordinates[2], self.main_coordinates[1] - self.main_coordinates[0]), dtype=np.uint8)
 
+    def initialize_interface(self) -> None:
+        '''Initialize the interface'''
+        self.pixels = []
+        self.final_image_digit = np.zeros((self.main_coordinates[3] - self.main_coordinates[2], self.main_coordinates[1] - self.main_coordinates[0]), dtype=np.uint8)
+        self.digit = None
+        self.is_active = True
+        self.is_drawing = False
+        self.is_drawn = False
+
     def draw_main(self, screen : np.ndarray) -> None:
         '''Draw the interface and the buttons'''
         # We draw the interface
@@ -100,20 +110,23 @@ class InterfaceDigit():
         '''Activate the button "erase digit" if the list of pixels is not empty'''
         return self.pixels != []
     
-    def click_on_buttons(self, coordinates_click : tuple[int]) -> None:
+    def click_on_buttons(self, coordinates_click : tuple[int]) -> int:
         '''Check if the click is on the buttons'''
         for i in range(len(self.buttons)):
             if self.buttons[i].is_clicked(coordinates_click):
                 if i == 0:
                     # transform the final image of the digit into a 40x40 image
-                    self.final_image_digit = cv2.resize(self.final_image_digit, (40, 40))
-                    self.final_image_digit = np.array(self.final_image_digit)
-
-                    self.reinitialize_interface()
+                    self.final_image_digit = cv2.resize(self.final_image_digit, (28, 28))
+                    # We predict the digit
+                    self.digit = mdr.main_digit_recognition(self.final_image_digit)
+                    print("The recognized digit is :", self.digit)
+                    self.is_active = False
+                    return self.digit
                 elif i == 1:
                     self.pixels = []
                     self.is_drawn = False
                     self.is_drawing = False
+        return None
 
     def draw_digit(self, img : np.ndarray, coordinates_hand : tuple[int]) -> None:
         '''Draw the digit'''
@@ -138,22 +151,12 @@ class InterfaceDigit():
     def modify_final_image(self) -> None:
         '''Modify the final image'''
         for pixel in self.pixels:
-            self.final_image_digit[pixel[1] - self.main_coordinates[2], pixel[0] - self.main_coordinates[0]] = 1
+            self.final_image_digit[pixel[1] - self.main_coordinates[2], pixel[0] - self.main_coordinates[0]] = 255
 
     def draw_digit_on_screen(self, img : np.ndarray) -> None:
         '''Draw the final image of the digit on the screen, with transparency'''
         for pixel in self.pixels:
             img[pixel[1], pixel[0]] = 0
-
-            
-    def reinitialize_interface(self) -> None:
-        '''Reinitialize the interface'''
-        self.pixels = []
-        self.is_drawn = False
-        self.is_drawing = False
-        self.digit = None
-        self.is_active = False
-        self.initialize_final_image_digit()
 
         
 
