@@ -6,23 +6,23 @@ import cv2
 class Button():
     '''This class represents a button in the graphical user interface.
     
-    Attributes :
-        coordinates : list[int]
-        color : tuple[int]
-        thickness : int
-        text : str
-        text_font_scale : int
-        text_thickness : int
-        text_color_active : tuple[int]
-        text_color_inactive : tuple[int]
-        transparency_active : int
-        transparency_inactive : int
-        is_active : bool
-        
-    Methods :
-        draw : draw the button in the screen
-        update_button_status : update the status of the button
-        is_clicked : check if the button is clicked
+    Attributes:
+        coordinates (list[int]): coordinates of the button
+        color (tuple[int]): color of the button
+        thickness (int): thickness of the button
+        text (str): text of the button
+        text_font_scale (int): font scale of the text
+        text_thickness (int): thickness of the text
+        text_color_active (tuple[int]): color of the text when the button is active
+        text_color_inactive (tuple[int]): color of the text when the button is inactive
+        transparency_active (int): transparency of the button when it is active
+        transparency_inactive (int): transparency of the button when it is inactive
+        is_active (bool): True if the button is active, False otherwise
+
+    Methods:
+        draw: draw the button on the screen
+        update_button_status: update the status of the button
+        is_clicked: check if the button is clicked
     '''
 
     def __init__(self, coordinates: list[int], color: tuple[int], thickness: int, text: str, text_font_scale: int, text_thickness: int, font_color_active: tuple[int], font_color_inactive: tuple[int], transparency_active: int, transparency_inactive: int):
@@ -39,7 +39,7 @@ class Button():
         self.is_active = False
 
     def draw(self, screen:np.ndarray) -> None:
-        '''Draw the button in the screen'''
+        '''Draw the button on the screen'''
         screen1 = screen.copy()
         if self.is_active:
             color_text = self.text_color_active
@@ -59,7 +59,7 @@ class Button():
             self.is_active = False
 
     def is_clicked(self, coordinates_click: tuple[int]) -> bool:
-        '''Check if the button is clicked'''
+        '''Return True if the button is clicked'''
         if self.is_active:
             if coordinates_click[0] >= self.coordinates[0] and coordinates_click[0] < self.coordinates[1] and coordinates_click[1] >= self.coordinates[2] and coordinates_click[1] < self.coordinates[3]:
                 return True

@@ -7,19 +7,19 @@ class Cell():
     '''This class represents a cell of the sudoku. It is composed of a value and coordinates.
     
     Attributes :
-        position_in_grid : tuple[int]
-        value : int
-        initial : bool
-        is_drawn : bool
-        is_active : bool
-        size_cell : int
-        coordinates : tuple[int]
+        position_in_grid (tuple[int]) : position of the cell in the grid
+        value (int) : value of the cell
+        initial (bool) : True if the cell is an initial cell, False otherwise
+        is_drawn (bool) : True if the cell is drawn, False otherwise
+        is_active (bool) : True if the cell is active, False otherwise
+        size_cell (int) : size of the cell
+        coordinates (tuple[int]) : coordinates of the cell
 
     Methods :
         calculate_size_cell : calculate the size of a cell
         calculate_coordinates : calculate the coordinates of the cell
         display_cell : display a number in a given cell
-        is_clicked : check if a cell is clicked
+        is_clicked : return True if a cell is clicked. An ititial cell cannot be clicked
         erase_cell : erase the number in a given cell
     '''
 
@@ -36,7 +36,7 @@ class Cell():
         '''Calculate the size of a cell'''
         return (constants.MAIN_GRID_COORDINATES[1] - constants.MAIN_GRID_COORDINATES[0]) // constants.MAIN_GRID_SIZE
 
-    def calculate_coordinates(self) -> None:
+    def calculate_coordinates(self) -> tuple[int]:
         '''Calculate the coordinates of the cell'''
         return (constants.MAIN_GRID_COORDINATES[0] + self.position_in_grid[1]*(constants.MAIN_GRID_COORDINATES[1] - constants.MAIN_GRID_COORDINATES[0])//constants.MAIN_GRID_SIZE, constants.MAIN_GRID_COORDINATES[0] + (self.position_in_grid[1] + 1)*(constants.MAIN_GRID_COORDINATES[1] - constants.MAIN_GRID_COORDINATES[0])//constants.MAIN_GRID_SIZE, constants.MAIN_GRID_COORDINATES[2] + self.position_in_grid[0]*(constants.MAIN_GRID_COORDINATES[3] - constants.MAIN_GRID_COORDINATES[2])//constants.MAIN_GRID_SIZE, constants.MAIN_GRID_COORDINATES[2] + (self.position_in_grid[0] + 1)*(constants.MAIN_GRID_COORDINATES[3] - constants.MAIN_GRID_COORDINATES[2])//constants.MAIN_GRID_SIZE)
 
@@ -51,13 +51,13 @@ class Cell():
             self.is_drawn = True
 
     def is_clicked(self, coordinates_click : tuple[int]) -> bool:
-        '''Check if a cell is clicked. An ititial cell cannot be clicked'''
+        '''Return True if a cell is clicked. An ititial cell cannot be clicked'''
         if coordinates_click[0] >= self.coordinates[0] and coordinates_click[0] < self.coordinates[1] and coordinates_click[1] >= self.coordinates[2] and coordinates_click[1] < self.coordinates[3] and not self.initial:
             return True
         else:
             return False
 
-    def erase_cell(self):
+    def erase_cell(self) -> None:
         '''Erase the number in a given cell'''
         self.value = None
         self.is_drawn = False

@@ -1,25 +1,20 @@
-import time
-
-import cv2
 import numpy as np
 
-from graphical_user_interface import constants
 from graphical_user_interface import interface_grid as ig
-from graphical_user_interface import interface_digit as id
-
+from graphical_user_interface import global_variable as gv
 
 
 def main_interface(img:np.ndarray, grid:ig, coordinates_click: tuple[int], coordinates_hand: tuple[int]) -> np.ndarray:
     '''This function is the main function of the graphical user interface.
     
-    Args:
-        img (np.ndarray): image
-        grid (ig.Grid): grid of the sudoku
-        coordinates_click (tuple[int]): coordinates of the click
-        coordinates_hand (tuple[int]): coordinates of the hand
-        
-    Returns:
-        img (np.ndarray): image
+    Parameters :
+        img (np.ndarray) : image on which we draw the interface
+        grid (InterfaceGrid) : interface of the grid
+        coordinates_click (tuple[int]) : coordinates of the click
+        coordinates_hand (tuple[int]) : coordinates of the hand
+
+    Returns :
+        img (np.ndarray) : image on which we draw the interface
     '''
     if grid.interface_digit.is_active:
         # We draw the main digit interface
@@ -28,7 +23,7 @@ def main_interface(img:np.ndarray, grid:ig, coordinates_click: tuple[int], coord
         if coordinates_click is not None:
             grid.interface_digit.click_on_grid(coordinates_click)
 
-            constants.digit = grid.interface_digit.click_on_buttons(coordinates_click)
+            gv.digit = grid.interface_digit.click_on_buttons(coordinates_click)
 
         else:
             grid.interface_digit.draw_digit(img, coordinates_hand)  
@@ -39,11 +34,15 @@ def main_interface(img:np.ndarray, grid:ig, coordinates_click: tuple[int], coord
         # We draw the grid
         grid.draw_grid(img)
 
-        if constants.digit is not None:
+        if gv.digit is not None:
             if grid.active_cell is not None:
-                grid.active_cell.value = constants.digit
+                grid.active_cell.value = gv.digit
                 grid.active_cell.is_active = False
                 grid.active_cell = None
+
+        if grid.completed:
+            grid.display_completion(img)
+
 
         grid.display_digits_grid(img)
 
@@ -60,54 +59,7 @@ def main_interface(img:np.ndarray, grid:ig, coordinates_click: tuple[int], coord
             grid.update_buttons_status() 
 
         grid.update_buttons_status()  
-        constants.digit = None
+        gv.digit = None
 
     return img
-    
 
-if __name__ == '__main__':
-    # Use the built-in webcam to capture video
-    # wait for 1 second before the webcam starts
-    time.sleep(1)
-    cap = cv2.VideoCapture(0)
-
-    # Set the webcam resolution (we have to put it bigger to display the sudoku)
-    cap.set(3, constants.WIDTH_CAMERA)
-    cap.set(4, constants.HEIGHT_CAMERA)
-
-    while True:
-        # Read the image from the webcam
-        _, img = cap.read()
-
-        # Resize the image in function of the webcam resolution
-        img = cv2.resize(img, (constants.WIDTH_CAMERA, constants.HEIGHT_CAMERA))
-
-        # We convert the image to RGB 
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-        # We create the grid
-        if constants.MAIN_GRID_SIZE == 4:
-            grid = ig.Grid(constants.MAIN_GRID_COORDINATES, constants.LIST_DIGITS_INITIAL_4)
-        elif constants.MAIN_GRID_SIZE == 9:
-            grid = ig.Grid(constants.MAIN_GRID_COORDINATES, constants.LIST_DIGITS_INITIAL_9)
-
-        # We draw the grid and the digits inside
-        grid.draw_grid(img)
-        grid.display_digits_grid(img)
-
-        # We convert the image back to BGR
-        img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-
-        # We display the resulting frame
-        cv2.imshow("Image", img)
-
-        # if 'q' is pressed, quit
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-        # We check if the sudoku is completed
-        grid.display_completion(img)
-
-    # release the camera and close the window
-    cap.release()
-    cv2.destroyAllWindows()

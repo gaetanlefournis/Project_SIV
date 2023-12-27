@@ -10,7 +10,7 @@ def main():
     # Initialize the webcam
     #######################
     time.sleep(1) 
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
     cap.set(3, gui.WIDTH_CAMERA)
     cap.set(4, gui.HEIGHT_CAMERA)
 
@@ -19,7 +19,7 @@ def main():
     detector = hd.hand_detector.HandDetector()
     display = hd.hand_display.Display()
     if gui.MAIN_GRID_SIZE == 4:
-        grid = gui.interface_grid.Grid(gui.MAIN_GRID_COORDINATES, gui.LIST_DIGITS_INITIAL_4)
+        grid = gui.interface_grid.Grid(gui.MAIN_GRID_COORDINATES, gui.LIST_DIGITS_INITIAL_4_1)
     elif gui.MAIN_GRID_SIZE == 9:
         grid = gui.interface_grid.Grid(gui.MAIN_GRID_COORDINATES, gui.LIST_DIGITS_INITIAL_9)
 
@@ -36,8 +36,8 @@ def main():
         img = cv2.resize(img, (gui.WIDTH_CAMERA, gui.HEIGHT_CAMERA))
         img = utils.convert_to_RGB(img)
 
-        # main_detector
-        ###############
+        # main_detector of the hand
+        ###########################
         img, coordinates_click, hand_barycenter = hd.main_hand_detection.main_hand_detection(img, detector, display)
 
         # main_interface
@@ -63,6 +63,7 @@ def main():
     
 
 
-
+# Launch the main function
+##########################
 if __name__ == '__main__':
     main()

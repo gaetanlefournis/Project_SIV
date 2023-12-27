@@ -1,7 +1,5 @@
 import numpy as np
 
-digit = None
-
 ###################################
 #  GENERAL PARAMETERS OF THE GUI  #
 ###################################
@@ -18,6 +16,10 @@ LIST_DIGITS_INITIAL_4 = [[0, 0, 0, 3],
                         [0, 4, 0, 0],
                         [0, 0, 3, 2],
                         [0, 0, 0, 0]]
+LIST_DIGITS_INITIAL_4_1 = [[1, 2, 4, 3],
+                        [3, 4, 2, 1],
+                        [4, 1, 3, 2],
+                        [2, 3, 1, 0]]
 LIST_DIGITS_INITIAL_9 = [[1, 0, 0, 0, 0, 0, 0, 0, 6],
                        [0, 0, 6, 0, 2, 0, 7, 0, 0],
                        [7, 8, 9, 4, 5, 0, 1, 0, 3],
@@ -57,7 +59,8 @@ DIGITS_THICKNESS = 2
 DIGITS_FONTSCALE = 4 - np.sqrt(MAIN_GRID_SIZE) if np.sqrt(MAIN_GRID_SIZE) < 3 else 1
 
 # DISPLAY COMPLETION
-COMPLETION_COLOR = (0, 255, 0)
+COMPLETION_COLOR_TRUE = (0, 255, 0)
+COMPLETION_COLOR_FALSE = (255, 0, 0)
 COMPLETION_FONTSCALE = 3
 COMPLETION_THICKNESS = 3
 

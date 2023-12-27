@@ -7,6 +7,7 @@ hand_detection/__pycache__
 graphical_user_interface/__pycache__
 utils/__pycache__
 digit_recognition/__pycache__
+digit_recognition/images
 .vscode/
 __pycache__/
 ```

@@ -1,0 +1,1 @@
+from digit_recognition import model, main_digit_recognition

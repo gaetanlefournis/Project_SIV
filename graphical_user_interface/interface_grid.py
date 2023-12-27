@@ -12,32 +12,32 @@ class Grid():
     The grid is completed when all the cells have a value.
     
     Attributes : 
-        main_coordinates : list[int]
-        list_cells_origin : list[list[int]]
-        cells : np.ndarray
-        buttons : np.ndarray
-        interface_digit : id.InterfaceDigit
-        completed : bool
-        active_cell : list[int]
+        main_coordinates (list[int]) : coordinates of the main grid
+        list_cells_origin (list[list[int]]) : list of the cells of the grid
+        cells (np.ndarray) : cells of the grid
+        buttons (np.ndarray) : buttons of the sudoku interface
+        interface_digit (id.InterfaceDigit) : interface to write the digit
+        completed (bool) : True if the grid is completed, False otherwise
+        active_cell (ic.Cell) : cell that is active
 
     Methods :
         create_cells : create the objects "cell" of the grid
         create_buttons : create the buttons of the sudoku interface
+        create_interface_digit : create the interface to write the digit
         draw_grid : draw the grid on the screen and the empty cells
         draw_lines : draw the main lines of the grid
         draw_cells : draw the cells of the grid
         draw_buttons : draw the buttons of the sudoku interface
         display_digits_grid : display the digits of the grid
         find_clicked_cell : find the cell that has been clicked
-        update_buttons_status : return the status of the buttons
+        update_buttons_status : update the status of the buttons
         activate_validate_grid : activate the button "Validate grid" if the grid is completed
-        activate_draw_digit : activate the button "Draw digit" if there a cell is active and if it has not been drawn
+        activate_draw_digit : activate the button "Draw digit" if a cell is active and if it has not been drawn
         activate_delete_cell : activate the button "Delete cell" if there a cell is drawn and if it's not an initial cell
-        click_on_buttons : check if the user has clicked on a button
-        ask_digit : ask the user to put a digit in the grid via the terminal
+        click_on_buttons : check if the user has clicked on a button, and execute the action associated
         display_completion : display the message "Sudoku Completed" if the grid is completed
         is_validate : check if the sudoku grid is correct
-        is_list_correct : check if a list of values is correct
+        is_list_correct : check if a list of values is correct, which means not twice the same number and a max value of size_grid
     '''
 
     def __init__(self, main_coordinates:list[int], list_cells_origin :list[list[int]]):
@@ -138,7 +138,6 @@ class Grid():
 
     def find_clicked_cell(self, coordinates_click: tuple[int]) -> None:
         '''Find the cell that has been clicked'''
-
         for i in range(constants.MAIN_GRID_SIZE):
             for j in range(constants.MAIN_GRID_SIZE):
                 if self.cells[i][j].is_clicked(coordinates_click):
@@ -148,7 +147,6 @@ class Grid():
                     self.active_cell = self.cells[i][j]
                     break
         
-    
     def update_buttons_status(self) -> None:
         '''Return the status of the buttons'''
         self.buttons[0].update_button_status(self.activate_validate_grid)
@@ -160,6 +158,7 @@ class Grid():
         for i in range(constants.MAIN_GRID_SIZE):
             for j in range(constants.MAIN_GRID_SIZE):
                 if not self.cells[i][j].is_drawn:
+                    self.completed = False
                     return False
         return True
 
@@ -176,47 +175,37 @@ class Grid():
         return False
     
     def click_on_buttons(self, coordinates_click : tuple[int]) -> None:
-        '''Check if the user has clicked on a button'''
+        '''Check if the user has clicked on a button, and execute the action associated'''
         for i in range(len(self.buttons)):
             if self.buttons[i].is_active and self.buttons[i].is_clicked(coordinates_click):
                 if i == 0:
-                    self.display_completion()
-                    self.active_cell.is_active = False
-                    self.active_cell = None
+                    self.completed = True
+                    if self.active_cell is not None:
+                        self.active_cell.is_active = False
+                        self.active_cell = None
                 elif i == 1:
                     self.interface_digit.initialize_interface()
                 elif i == 2:
                     self.active_cell.erase_cell()
                     self.active_cell.is_active = False
                     self.active_cell = None
-
-    def ask_digit(self) -> None:
-        '''Ask the user to put a digit in the grid via the terminal'''
-        if self.active_cell is not None and not self.active_cell.is_drawn:
-            self.active_cell.value = int(input("Enter a digit for the cell ({}, {}) : ".format(self.active_cell.position_in_grid[0], self.active_cell.position_in_grid[1])))
-            print("You have entered the digit {} for the cell ({}, {})".format(self.active_cell.value, self.active_cell.position_in_grid[0], self.active_cell.position_in_grid[1]))
-            self.active_cell.is_active = False
-            self.active_cell = None
-            for i in range(1, len(self.buttons)):
-                self.buttons[i].is_active = False
     
     def display_completion(self, screen : np.ndarray) -> None:
         '''Display the message "Sudoku Completed" if the grid is completed'''
         if self.is_validate():
-            cv2.putText(screen, "Sudoku Completed !", (constants.WIDTH_CAMERA//10, constants.HEIGHT_CAMERA//2), cv2.FONT_HERSHEY_DUPLEX, constants.COMPLETION_FONTSCALE, constants.COMPLETION_COLOR, constants.COMPLETION_THICKNESS, cv2.LINE_AA)
+            cv2.putText(screen, "Sudoku Completed !", (constants.WIDTH_CAMERA//10, constants.HEIGHT_CAMERA//2), cv2.FONT_HERSHEY_DUPLEX, constants.COMPLETION_FONTSCALE, constants.COMPLETION_COLOR_TRUE, constants.COMPLETION_THICKNESS, cv2.LINE_AA)
         else:
-            cv2.putText(screen, "Sudoku Wrong !", (constants.WIDTH_CAMERA//10, constants.HEIGHT_CAMERA//2), cv2.FONT_HERSHEY_DUPLEX, constants.COMPLETION_FONTSCALE, constants.COMPLETION_COLOR, constants.COMPLETION_THICKNESS, cv2.LINE_AA)
+            cv2.putText(screen, "Sudoku Wrong !", (constants.WIDTH_CAMERA//10, constants.HEIGHT_CAMERA//2), cv2.FONT_HERSHEY_DUPLEX, constants.COMPLETION_FONTSCALE, constants.COMPLETION_COLOR_FALSE, constants.COMPLETION_THICKNESS, cv2.LINE_AA)
 
     def is_validate(self) -> bool:
         '''Check if the sudoku grid is correct'''
-
         # Check the lines
         for i in range(constants.MAIN_GRID_SIZE):
             list_values = []
             for j in range(constants.MAIN_GRID_SIZE):
                 if self.cells[i][j].is_drawn:
                     list_values.append(self.cells[i][j].value)
-            if not self.is_list_correct(list_values):
+            if not self.is_list_correct(list_values, constants.MAIN_GRID_SIZE):
                 return False
             
         # Check the columns
@@ -225,7 +214,7 @@ class Grid():
             for i in range(constants.MAIN_GRID_SIZE):
                 if self.cells[i][j].is_drawn:
                     list_values.append(self.cells[i][j].value)
-            if not self.is_list_correct(list_values):
+            if not self.is_list_correct(list_values, constants.MAIN_GRID_SIZE):
                 return False
             
         # Check the squares
@@ -237,13 +226,16 @@ class Grid():
                     for l in range(sqrt_sudoku_size):
                         if self.cells[i*sqrt_sudoku_size + k][j*sqrt_sudoku_size + l].is_drawn:
                             list_values.append(self.cells[i*sqrt_sudoku_size + k][j*sqrt_sudoku_size + l].value)
-                if not self.is_list_correct(list_values):
+                if not self.is_list_correct(list_values, constants.MAIN_GRID_SIZE):
                     return False
         
         return True
     
-    def is_list_correct(self, list_values : list[int]) -> bool:
-        '''Check if a list of values is correct'''
+    def is_list_correct(self, list_values : list[int], size_grid:int) -> bool:
+        '''Check if a list of values is correct, which means not twice the same number and a max value of size_grid'''
         if len(list_values) != len(set(list_values)):
             return False
+        for i in range(len(list_values)):
+            if list_values[i] > size_grid or list_values[i] < 1:
+                return False
         return True

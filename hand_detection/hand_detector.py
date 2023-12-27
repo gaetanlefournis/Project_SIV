@@ -7,14 +7,16 @@ class HandDetector():
     '''This class is used to detect hands in an image/video and perform actions.
     
     Attributes:
-        img: image
-        mpHands: mediapipe hands object
-        hands: mediapipe hands object
-        results: results of the mediapipe hands object after processing
-        
+        img (np.ndarray): image in which we detect hands
+        mpHands (mediapipe.solutions.hands): object used to detect hands
+        hands (mediapipe.solutions.hands.Hands): object used to detect hands
+        results (mediapipe.framework.formats.landmark.LandmarkList): results of the hand detection
+        list_actions (np.ndarray): list of the actions performed by the hand
+
     Methods:
         process_image: process an image in order to detect hands in it
-        click: returns True if at least three of the fingers are bent
+        fingers_bent: return True if at least three of the fingers are bent
+        click: return True if the hand is in a click position
     '''
 
     def __init__(self):
@@ -24,11 +26,11 @@ class HandDetector():
         self.results = None
         self.list_actions = np.asarray([False, False, False, False, False])
 
-    def process_image(self) -> np.ndarray:
+    def process_image(self) -> None:
         '''This function processes an image in order to detect hands in it.'''
         self.results = self.hands.process(self.img)
 
-    def fingers_bent(self, hand:hp.Hand) -> bool:
+    def fingers_bent(self, hand:hp.Hand) -> None:
         '''This function returns True if at least three of the fingers are bent.'''
         self.list_actions = np.roll(self.list_actions, -1)
         if hand.fingers.sum() >= 2:
