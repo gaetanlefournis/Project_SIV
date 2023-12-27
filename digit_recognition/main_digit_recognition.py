@@ -13,6 +13,8 @@ def main_digit_recognition(img : np.ndarray) -> int:
     """
     
     model = load_model('modele_reconnaissance_chiffres.h5') 
+    model1 = load_model('modele_reconnaissance_chiffres_contours.h5') 
+    # Convert the image into a 28x28 image in grayscale
     
     # Convert the image to a numpy array
     img_array = image.img_to_array(img)
