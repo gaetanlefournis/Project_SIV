@@ -13,7 +13,9 @@ def main_digit_recognition(img : np.ndarray) -> int:
     """
     
     model = load_model('modele_reconnaissance_chiffres.h5') 
-    model1 = load_model('modele_reconnaissance_chiffres_contours.h5') 
+    model1 = load_model('modele_Canny.h5') 
+    model2 = load_model('modele_Sobel.h5')
+    model3 = load_model('modele_Laplacian.h5')
     # Convert the image into a 28x28 image in grayscale
     
     # Convert the image to a numpy array
@@ -24,7 +26,7 @@ def main_digit_recognition(img : np.ndarray) -> int:
     img_array = np.expand_dims(img_array, axis=0)
 
     # Make the prediction
-    prediction = model.predict(img_array)
+    prediction = model2.predict(img_array) #most effective model
 
     # Get the index of the predicted class (the recognized digit)
     digit = np.argmax(prediction)
