@@ -12,7 +12,7 @@ def main_digit_recognition(img : np.ndarray) -> int:
         digit (int) : The recognized digit
     """
     
-    model = load_model('digit_recognition/model_reconnaissance_chiffres.h5') 
+    model = load_model('digit_recognition/model_Sobel.h5') 
     model1 = load_model('digit_recognition/model_Canny.h5') 
     model2 = load_model('digit_recognition/model_Sobel.h5')
     model3 = load_model('digit_recognition/model_Laplacian.h5')
@@ -26,7 +26,7 @@ def main_digit_recognition(img : np.ndarray) -> int:
     img_array = np.expand_dims(img_array, axis=0)
 
     # Make the prediction
-    prediction = model2.predict(img_array) #most effective model
+    prediction = model.predict(img_array) #most effective model
 
     # Get the index of the predicted class (the recognized digit)
     digit = np.argmax(prediction)
