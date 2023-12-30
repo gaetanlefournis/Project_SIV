@@ -1,21 +1,20 @@
 import cv2
 import matplotlib.pyplot as plt
 
-# Charger une image en niveaux de gris
 image = cv2.imread("digit_recognition/model1.png", 0)
 
-# Méthode de détection de contours : Canny
+# Edges detection method : Canny
 edges_canny = cv2.Canny(image, 100, 200)
 
-# Méthode de détection de contours : Sobel
+# Edges detection method : Sobel
 sobel_x = cv2.Sobel(image, cv2.CV_64F, 1, 0, ksize=5)
 sobel_y = cv2.Sobel(image, cv2.CV_64F, 0, 1, ksize=5)
 edges_sobel = cv2.magnitude(sobel_x, sobel_y)
 
-# Méthode de détection de contours : Laplacian
+# Edges detection method : Laplacian
 edges_laplacian = cv2.Laplacian(image, cv2.CV_64F)
 
-# Affichage des résultats
+# Results
 plt.figure(figsize=(10, 5))
 
 plt.subplot(2, 2, 1)
