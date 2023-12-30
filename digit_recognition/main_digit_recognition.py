@@ -12,10 +12,10 @@ def main_digit_recognition(img : np.ndarray) -> int:
         digit (int) : The recognized digit
     """
     
-    model = load_model('modele_reconnaissance_chiffres.h5') 
-    model1 = load_model('modele_Canny.h5') 
-    model2 = load_model('modele_Sobel.h5')
-    model3 = load_model('modele_Laplacian.h5')
+    model = load_model('digit_recognition/model_reconnaissance_chiffres.h5') 
+    model1 = load_model('digit_recognition/model_Canny.h5') 
+    model2 = load_model('digit_recognition/model_Sobel.h5')
+    model3 = load_model('digit_recognition/model_Laplacian.h5')
     # Convert the image into a 28x28 image in grayscale
     
     # Convert the image to a numpy array
