@@ -15,6 +15,7 @@ This project consists in creating a virtual sudoku. The aim is to detect the han
 <!-- HOW TO INSTALL -->
 ## Installation
 
+Careful, this is for Linux users.
 Please make sure that "make" is installed :
 
 ```bash
@@ -37,9 +38,16 @@ source venv/bin/activate
 
 Now you can work on the project! 
 Don't forget to enter the environment each time you want to work on it.
-If we add some dependencies in the requirements.txt, be sure to do "make install" again to have them.
+If you add some dependencies in the requirements.txt, be sure to do "make install" again to have them.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+## In the code
+In the file graphical_user_interface/constants.py, there is : 
+- The number of the camera you use (0 if it's the integrated webcam of your computer, 1 or 2 otherwise)
+- The size of the grid that can be changed (4 or 9)
+- One grid per size (feel free to import other ones)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->

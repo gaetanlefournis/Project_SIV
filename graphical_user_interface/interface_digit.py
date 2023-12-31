@@ -59,7 +59,7 @@ class InterfaceDigit():
 
     def initialize_final_image_digit(self) -> None:
         '''Create the final image of the digit'''
-        self.final_image_digit = np.zeros((self.main_coordinates[3] - self.main_coordinates[2], self.main_coordinates[1] - self.main_coordinates[0]), dtype=np.uint8)
+        self.final_image_digit = np.zeros((self.main_coordinates[3] - self.main_coordinates[2], self.main_coordinates[1] - self.main_coordinates[0]), dtype=np.float32)
 
     def initialize_interface(self) -> None:
         '''Initialize the interface'''
@@ -113,8 +113,6 @@ class InterfaceDigit():
         for i in range(len(self.buttons)):
             if self.buttons[i].is_clicked(coordinates_click):
                 if i == 0:
-                    # Resize the drawn image to 28x28 pixels and predict the number thanks to our model
-                    self.final_image_digit = cv2.resize(self.final_image_digit, (28, 28))
                     self.digit = mdr.main_digit_recognition(self.final_image_digit)
                     print("The recognized digit is :", self.digit)
                     self.is_active = False

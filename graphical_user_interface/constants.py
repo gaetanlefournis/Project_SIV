@@ -7,6 +7,7 @@ import numpy as np
 # CAMERA
 ########
 
+CAMERA_NUMBER = 0
 WIDTH_CAMERA = 1280
 HEIGHT_CAMERA = 720
 

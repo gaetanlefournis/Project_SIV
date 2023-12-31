@@ -50,13 +50,7 @@ def main_interface(img:np.ndarray, grid:ig, coordinates_click: tuple[int], coord
         if coordinates_click is not None:
             grid.find_clicked_cell(coordinates_click)
 
-            grid.update_buttons_status()  
-            # We ask the user to put a digit in the grid via the terminal
-            # grid.ask_digit() 
-
             grid.click_on_buttons(coordinates_click)
-
-            grid.update_buttons_status() 
 
         grid.update_buttons_status()  
         gv.digit = None
