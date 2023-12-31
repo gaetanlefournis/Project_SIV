@@ -34,9 +34,6 @@ def main_digit_recognition(img : np.ndarray) -> int:
     # Add batch dimension
     img_array = np.expand_dims(img_array, axis=0)
 
-    plt.imshow(img_array[0, :, :, 0], cmap='gray')
-    plt.show()
-
     # Make the prediction
     prediction = model2.predict(img_array)
 
