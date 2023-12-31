@@ -1,8 +1,6 @@
 # Dependencies useful for the project
 
-```
 opencv-python
 numpy
 mediapipe
 tensorflow==2.15.0
-```
