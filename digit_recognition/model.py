@@ -50,7 +50,7 @@ def main():
     plt.show()
 
     # Save the model
-    model.save('model_reconnaissance_chiffres.h5')
+    model.save('model_digit_recognition.h5')
 
 if __name__ == '__main__':
     main()

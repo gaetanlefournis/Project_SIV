@@ -2,7 +2,7 @@ import cv2
 import matplotlib.pyplot as plt
 
 # Charger une image en niveaux de gris
-image = cv2.imread("C:\\Users\\danhe\\OneDrive\\Documents\\Projetstrento\\Project_SIV\\digit_recognition\\model1.png", 0)
+image = cv2.imread("digit_recognition/model1.png", 0)
 
 # Méthode de détection de contours : Canny
 edges_canny = cv2.Canny(image, 100, 200)
