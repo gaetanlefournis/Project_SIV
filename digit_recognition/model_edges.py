@@ -7,7 +7,7 @@ from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.backend import clear_session
 
 
-def extract_edges(image,meth):
+def extract_edges(image :np.ndarray, meth : str) -> np.ndarray:
     '''This function is the function that extracts the edges of an image, in function of the given method.'''
     if meth == "Canny":
         edges = cv2.Canny(image, 100, 200)
@@ -21,7 +21,7 @@ def extract_edges(image,meth):
         return False
     return edges
 
-def preprocess_with_contours(x_data, meth):
+def preprocess_with_contours(x_data : list, meth : str) -> list:
     '''This function is the function that preprocesses the data with contours.'''
     x_processed = []
     for img in x_data:
@@ -31,13 +31,13 @@ def preprocess_with_contours(x_data, meth):
         x_processed.append(contours_resized)
     return x_processed
 
-def evaluate_model(model_file, x_test_processed, y_test):
+def evaluate_model(model_file : str, x_test_processed : np.ndarray, y_test : np.ndarray) -> float:
     '''This function is the function that evaluates the models for digit recognition.'''
     model = load_model(model_file)
     _, accuracy = model.evaluate(x_test_processed, y_test, verbose=0)
     return accuracy
 
-def train_and_save_model(x_train_processed, x_test_processed, y_train, y_test, model_filename):
+def train_and_save_model(x_train_processed : np.ndarray, x_test_processed : np.ndarray, y_train : np.ndarray, y_test : np.ndarray, model_filename : str) -> Sequential:
     '''This function is the function that create and train the model for digit recognition.'''
     model = Sequential([
         Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
@@ -50,7 +50,7 @@ def train_and_save_model(x_train_processed, x_test_processed, y_train, y_test, m
     ])
 
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
-    history = model.fit(x_train_processed, y_train, epochs=20, batch_size=128, validation_data=(x_test_processed, y_test))
+    _ = model.fit(x_train_processed, y_train, epochs=20, batch_size=128, validation_data=(x_test_processed, y_test))
     model.save(model_filename)
     return model
 
@@ -65,7 +65,7 @@ def main():
         (x_train, y_train), (x_test, y_test) = mnist.load_data()
         
         # Preprocess data
-        x_train_processed = preprocess_with_contours(x_train, method)
+        x_train_processed = preprocess_with_contours(x_train, "Laplacian")
         x_test_processed = preprocess_with_contours(x_test, method)
 
         x_train_processed = np.array(x_train_processed)
