@@ -19,7 +19,7 @@ plt.figure(figsize=(10, 5))
 
 plt.subplot(2, 2, 1)
 plt.imshow(image, cmap='gray')
-plt.title('Image Originale')
+plt.title('Originale picture')
 plt.axis('off')
 
 plt.subplot(2, 2, 2)
