@@ -59,7 +59,7 @@ class InterfaceDigit():
 
     def initialize_final_image_digit(self) -> None:
         '''Create the final image of the digit'''
-        self.final_image_digit = np.zeros((self.main_coordinates[3] - self.main_coordinates[2], self.main_coordinates[1] - self.main_coordinates[0]), dtype=np.float32)
+        self.final_image_digit = np.zeros((self.main_coordinates[3] - self.main_coordinates[2], self.main_coordinates[1] - self.main_coordinates[0]), dtype=np.uint8)
 
     def initialize_interface(self) -> None:
         '''Initialize the interface'''
@@ -113,7 +113,7 @@ class InterfaceDigit():
         for i in range(len(self.buttons)):
             if self.buttons[i].is_clicked(coordinates_click):
                 if i == 0:
-                    self.digit = mdr.main_digit_recognition(self.final_image_digit)
+                    self.digit = mdr.main_digit_recognition(self.final_image_digit, "main")
                     print("The recognized digit is :", self.digit)
                     self.is_active = False
                     return self.digit
@@ -121,6 +121,7 @@ class InterfaceDigit():
                     self.pixels = []
                     self.is_drawn = False
                     self.is_drawing = False
+                    self.initialize_final_image_digit()
         return None
 
     def draw_digit(self, img : np.ndarray, coordinates_hand : tuple[int]) -> None:
