@@ -27,7 +27,7 @@ def preprocess_with_contours(x_data, meth):
     for img in x_data:
         contours = extract_edges(img, meth)
         contours_resized = cv2.resize(contours, (28, 28))
-        contours_resized = contours_resized[..., np.newaxis]
+        contours_resized = contours_resized.reshape((28, 28, 1)) 
         x_processed.append(contours_resized)
     return x_processed
 
